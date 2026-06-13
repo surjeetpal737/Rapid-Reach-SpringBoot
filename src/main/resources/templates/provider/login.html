@@ -9,21 +9,32 @@
 <body class="form-page">
 <main class="form-box">
     <h1>Provider Login</h1>
-    <div class="notice" th:if="${loginError}" th:text="${loginError}">Invalid email or password.</div>
+
+    <div class="notice" style="background:#e6f7ee; border-color:#5cb85c; color:#2d6a4f;"
+         th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <div class="notice" th:if="${loginError}" th:text="${loginError}"></div>
+
     <form th:action="@{/providers/login}" th:object="${login}" method="post">
         <label for="email">Email</label>
-        <input id="email" type="email" th:field="*{email}" required>
+        <input id="email" type="email" th:field="*{email}" autocomplete="email" required>
         <div class="error" th:errors="*{email}"></div>
 
         <label for="password">Password</label>
-        <input id="password" type="password" th:field="*{password}" required>
+        <input id="password" type="password" th:field="*{password}"
+               autocomplete="current-password" required>
         <div class="error" th:errors="*{password}"></div>
 
         <div class="actions">
             <button type="submit">Login</button>
             <a class="btn btn-secondary" th:href="@{/providers/register}">Register</a>
+            <a class="btn btn-secondary" th:href="@{/}">Home</a>
         </div>
     </form>
+
+    <p style="margin-top:14px; text-align:center;">
+        <a th:href="@{/providers/forgot-password}">Forgot password?</a>
+    </p>
 </main>
 </body>
 </html>

@@ -1,18 +1,20 @@
+/* ─── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-    --ink: #17202a;
-    --muted: #5d6d7e;
-    --line: #dde6ee;
-    --surface: #ffffff;
-    --page: #f5f7fb;
-    --primary: #157f74;
+    --ink:          #17202a;
+    --muted:        #5d6d7e;
+    --line:         #dde6ee;
+    --surface:      #ffffff;
+    --page:         #f5f7fb;
+    --primary:      #157f74;
     --primary-dark: #0f5e56;
-    --danger: #c0392b;
-    --success: #1e8449;
+    --danger:       #c0392b;
+    --success:      #1e8449;
+    --warning-bg:   #fff7e6;
+    --warning-br:   #f5d58c;
 }
 
-* {
-    box-sizing: border-box;
-}
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -21,11 +23,10 @@ body {
     background: var(--page);
 }
 
-a {
-    color: var(--primary);
-    text-decoration: none;
-}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
+/* ─── Topbar ─────────────────────────────────────────────────────────────── */
 .topbar {
     background: var(--surface);
     border-bottom: 1px solid var(--line);
@@ -41,17 +42,11 @@ a {
     padding: 0 20px;
 }
 
-.brand {
-    color: var(--ink);
-    font-size: 1.35rem;
-    font-weight: 700;
-}
+.brand { color: var(--ink); font-size: 1.35rem; font-weight: 700; }
 
-.nav-actions {
-    display: flex;
-    gap: 10px;
-}
+.nav-actions { display: flex; gap: 10px; align-items: center; }
 
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
 .hero {
     align-items: center;
     background: linear-gradient(135deg, #233142, #157f74);
@@ -69,10 +64,7 @@ a {
     width: 100%;
 }
 
-.hero h1 {
-    font-size: clamp(2rem, 5vw, 4rem);
-    margin: 0 0 14px;
-}
+.hero h1 { font-size: clamp(2rem, 5vw, 4rem); margin: 0 0 14px; }
 
 .hero p {
     font-size: 1.15rem;
@@ -81,9 +73,8 @@ a {
     max-width: 680px;
 }
 
-.section {
-    padding: 56px 20px;
-}
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+.section { padding: 56px 20px; }
 
 .grid {
     display: grid;
@@ -91,6 +82,7 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+/* ─── Cards & Form boxes ─────────────────────────────────────────────────── */
 .card,
 .form-box {
     background: var(--surface);
@@ -113,26 +105,34 @@ a {
     width: 100%;
 }
 
-.wide {
-    max-width: 680px;
-}
+.wide { max-width: 680px; }
 
-label {
-    display: block;
-    font-weight: 700;
-    margin-top: 14px;
-}
+/* ─── Form controls ──────────────────────────────────────────────────────── */
+label { display: block; font-weight: 700; margin-top: 14px; }
 
 input,
-select {
+select,
+textarea {
     border: 1px solid #cfd8e3;
     border-radius: 6px;
     font-size: 1rem;
+    font-family: inherit;
     margin-top: 6px;
     padding: 11px 12px;
     width: 100%;
+    /* FIX: textarea was not styled consistently with inputs */
+    resize: vertical;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+    border-color: var(--primary);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
 .btn,
 button {
     background: var(--primary);
@@ -144,25 +144,20 @@ button {
     font-size: 1rem;
     font-weight: 700;
     padding: 11px 18px;
+    text-decoration: none;
+    transition: background 0.15s ease;
 }
 
 .btn:hover,
-button:hover {
-    background: var(--primary-dark);
-}
+button:hover      { background: var(--primary-dark); text-decoration: none; }
+.btn-secondary    { background: var(--ink); }
+.btn-secondary:hover { background: #2c3e50; }
+.btn-danger       { background: var(--danger); }
+.btn-danger:hover { background: #a93226; }
+.btn-success      { background: var(--success); }
+.btn-success:hover { background: #196f3d; }
 
-.btn-secondary {
-    background: var(--ink);
-}
-
-.btn-danger {
-    background: var(--danger);
-}
-
-.btn-success {
-    background: var(--success);
-}
-
+/* ─── Actions row ────────────────────────────────────────────────────────── */
 .actions {
     display: flex;
     flex-wrap: wrap;
@@ -170,6 +165,7 @@ button:hover {
     margin-top: 20px;
 }
 
+/* ─── Error & notice ─────────────────────────────────────────────────────── */
 .error {
     color: var(--danger);
     font-size: 0.9rem;
@@ -177,33 +173,51 @@ button:hover {
 }
 
 .notice {
-    background: #fff7e6;
-    border: 1px solid #f5d58c;
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-br);
     border-radius: 6px;
     margin: 14px 0;
     padding: 12px;
 }
 
-.detail {
-    color: var(--muted);
-    line-height: 1.55;
-}
+/* FIX: text-success and text-danger were referenced in templates but undefined */
+.text-success { color: var(--success); font-weight: 700; }
+.text-danger  { color: var(--danger);  font-weight: 700; }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
+/* ─── Typography helpers ─────────────────────────────────────────────────── */
+.detail { color: var(--muted); line-height: 1.55; }
 
-td,
-th {
+/* ─── Table ──────────────────────────────────────────────────────────────── */
+table { border-collapse: collapse; width: 100%; }
+
+td, th {
     border-bottom: 1px solid var(--line);
     padding: 12px;
     text-align: left;
+    vertical-align: top;
 }
 
+th { background: #f0f4f8; font-weight: 700; }
+
+tr:hover td { background: #fafbfc; }
+
+/* ─── Footer ─────────────────────────────────────────────────────────────── */
 footer {
     background: var(--ink);
     color: #d6dee8;
     padding: 24px 20px;
     text-align: center;
+}
+
+footer a:hover { color: white; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .topbar-inner { flex-direction: column; gap: 10px; padding: 12px 16px; }
+    .nav-actions  { flex-wrap: wrap; justify-content: center; }
+    .grid         { grid-template-columns: 1fr; }
+    .hero         { min-height: 50vh; padding: 40px 16px; }
+    .actions      { flex-direction: column; }
+    .actions .btn,
+    .actions button { width: 100%; text-align: center; }
 }

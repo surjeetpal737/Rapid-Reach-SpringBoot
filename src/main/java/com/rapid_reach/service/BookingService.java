@@ -1,10 +1,5 @@
 package com.rapid_reach.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
-
 import com.rapid_reach.dto.BookingRequestDto;
 import com.rapid_reach.entity.Booking;
 import com.rapid_reach.entity.Customer;
@@ -13,6 +8,11 @@ import com.rapid_reach.exception.ResourceNotFoundException;
 import com.rapid_reach.repository.BookingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class BookingService {
@@ -43,6 +43,7 @@ public class BookingService {
         booking.setPreferredTime(dto.getPreferredTime());
         booking.setProblemDescription(dto.getProblemDescription());
         booking.setStatus("Pending");
+        // 6-digit OTP: 100000–999999
         booking.setCompletionOtp(String.valueOf(100000 + RANDOM.nextInt(900000)));
         booking.setCreatedAt(LocalDateTime.now());
         return bookingRepository.save(booking);
@@ -71,13 +72,12 @@ public class BookingService {
 
     @Transactional
     public void updateStatus(Long bookingId, String status) {
-        if (!status.equals("Accepted") && !status.equals("Cancelled") && !status.equals("Pending")
+        if (!status.equals("Accepted") && !status.equals("Cancelled")
+                && !status.equals("Pending")
                 && !status.equals("In Progress") && !status.equals("Completed")) {
             throw new IllegalArgumentException("Unsupported booking status: " + status);
         }
-
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found."));
+        Booking booking = getById(bookingId);
         booking.setStatus(status);
         bookingRepository.save(booking);
     }
@@ -86,7 +86,8 @@ public class BookingService {
     public void completeWithOtp(Long bookingId, String otp, Long providerId) {
         Booking booking = getById(bookingId);
         if (!booking.getProviderId().equals(providerId)) {
-            throw new IllegalArgumentException("This booking does not belong to the logged in provider.");
+            throw new IllegalArgumentException(
+                    "This booking does not belong to the logged-in provider.");
         }
         if (!booking.getCompletionOtp().equals(otp)) {
             throw new IllegalArgumentException("Invalid OTP.");

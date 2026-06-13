@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" th:href="@{/customers/dashboard}">Rapid Reach</a>
+        <div class="nav-actions">
+            <a th:href="@{/customers/dashboard}">Search</a>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<main class="section">
+    <div class="container">
+        <h1 th:text="'My Bookings — ' + ${customer.name}">My Bookings</h1>
+
+        <p class="detail" th:if="${#lists.isEmpty(bookings)}">
+            You have no bookings yet.
+            <a th:href="@{/customers/dashboard}">Search for a provider</a> to get started.
+        </p>
+
+        <div class="grid" th:if="${!#lists.isEmpty(bookings)}">
+            <article class="card" th:each="booking : ${bookings}">
+                <h3 th:text="'Booking #' + ${booking.id}">Booking</h3>
+
+                <p><b>Provider:</b> <span th:text="${booking.providerName}">Provider</span></p>
+                <p><b>Phone:</b> <span th:text="${booking.providerPhone}">Phone</span></p>
+                <p><b>Service:</b> <span th:text="${booking.serviceType}">Service</span></p>
+                <p><b>City / Area:</b>
+                    <span th:text="${booking.city}">City</span>,
+                    <span th:text="${booking.area}">Area</span>
+                </p>
+                <p><b>Date:</b> <span th:text="${booking.bookingDate}">Date</span></p>
+                <p><b>Time:</b> <span th:text="${booking.preferredTime}">Time</span></p>
+                <p><b>Problem:</b> <span th:text="${booking.problemDescription}">Problem</span></p>
+                <p>
+                    <b>Status:</b>
+                    <span th:text="${booking.status}">Pending</span>
+                </p>
+
+                <!--
+                    Show the completion OTP to the customer once the booking is Accepted.
+                    The customer shares this OTP with the provider to confirm job completion.
+                -->
+                <div class="notice" th:if="${booking.status == 'Accepted'}">
+                    Your job completion OTP:
+                    <strong th:text="${booking.completionOtp}">000000</strong>
+                    <br>
+                    <small>Share this with your service provider when the job is done.</small>
+                </div>
+
+                <div class="notice" th:if="${booking.status == 'Completed'}">
+                    ✅ Job completed successfully.
+                </div>
+            </article>
+        </div>
+
+        <div class="actions" style="margin-top:20px;">
+            <a class="btn btn-secondary" th:href="@{/customers/dashboard}">Back to Search</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

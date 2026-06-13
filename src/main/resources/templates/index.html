@@ -11,8 +11,8 @@
     <div class="topbar-inner">
         <a class="brand" th:href="@{/}">Rapid Reach</a>
         <div class="nav-actions">
-            <a class="btn" th:href="@{/providers/register}">Service Provider</a>
-            <a class="btn btn-secondary" th:href="@{/customers/login}">User Login</a>
+            <a class="btn" th:href="@{/customers/login}">User Login</a>
+            <a class="btn btn-secondary" th:href="@{/providers/login}">Provider Login</a>
         </div>
     </div>
 </nav>
@@ -20,38 +20,68 @@
 <section class="hero">
     <div class="hero-inner">
         <h1>Welcome to Rapid Reach</h1>
-        <p>Your trusted platform to connect with verified service providers instantly.</p>
-        <div class="actions" style="justify-content:center">
-            <a class="btn" th:href="@{/providers/register}">Service Provider</a>
-            <a class="btn btn-secondary" th:href="@{/customers/login}">User Login</a>
-            <a class="btn btn-secondary" th:href="@{/customers/register}">User Registration</a>
+        <p>Your trusted platform to connect with verified local service providers instantly.
+            Book plumbers, electricians, carpenters, and more — all in one place.</p>
+        <div class="actions" style="justify-content:center;">
+            <a class="btn" th:href="@{/customers/register}">Get Started as Customer</a>
+            <a class="btn btn-secondary" th:href="@{/providers/register}">Register as Provider</a>
         </div>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
+        <h2>How It Works</h2>
+        <p class="detail" style="margin-bottom:24px;">
+            A simple three-step flow to get your home service done.
+        </p>
+        <div class="grid">
+            <article class="card">
+                <h3>1. Search</h3>
+                <p class="detail">
+                    Register as a customer and search for a technician by service type and city.
+                </p>
+            </article>
+            <article class="card">
+                <h3>2. Book</h3>
+                <p class="detail">
+                    Select an approved provider and submit a booking with your preferred date and time.
+                </p>
+            </article>
+            <article class="card">
+                <h3>3. Complete</h3>
+                <p class="detail">
+                    After the job, share your OTP with the provider to confirm completion and leave a review.
+                </p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: #fff; padding-top:0;">
+    <div class="container">
         <h2>Why Choose Rapid Reach?</h2>
-        <p class="detail">A simple flow for customers to find local providers and for providers to manage requests.</p>
         <div class="grid">
             <article class="card">
                 <h3>Verified Providers</h3>
-                <p class="detail">Provider registrations are stored with status so approval workflows can be added cleanly.</p>
+                <p class="detail">Every provider is reviewed by admin before being listed.</p>
             </article>
             <article class="card">
-                <h3>Instant Connection</h3>
-                <p class="detail">Search by technician type and city, then book the selected provider.</p>
+                <h3>OTP-Based Completion</h3>
+                <p class="detail">Jobs are marked complete only when the customer shares their OTP — no disputes.</p>
             </article>
             <article class="card">
-                <h3>Provider Dashboard</h3>
-                <p class="detail">Providers can view booking requests and accept or reject them.</p>
+                <h3>Ratings &amp; Feedback</h3>
+                <p class="detail">Leave a rating after every completed job to help the community.</p>
             </article>
         </div>
     </div>
 </section>
 
 <footer>
-    <p>© 2025 Rapid Reach | Developed by Surjeet</p>
+    <p>© 2025 Rapid Reach &nbsp;|&nbsp; B.Tech Minor Project &nbsp;|&nbsp;
+        <a th:href="@{/admin/login}" style="color:#9fb8c9;">Admin</a>
+    </p>
 </footer>
 </body>
 </html>

@@ -16,37 +16,101 @@
         </div>
     </div>
 </nav>
+
 <main class="section">
     <div class="container">
         <h1 th:text="'Welcome, ' + ${provider.name}">Welcome</h1>
+
+        <!-- Approval status notice -->
+        <div class="notice" th:if="${provider.status == 'Pending'}">
+            ⏳ Your account is pending admin approval. You can view bookings once approved.
+        </div>
+        <div class="notice" style="background:#ffe6e6; border-color:#f5a0a0;"
+             th:if="${provider.status == 'Rejected'}">
+            ❌ Your account was rejected.
+            <span th:if="${provider.rejectionReason != null}">
+                Reason: <em th:text="${provider.rejectionReason}"></em>
+            </span>
+        </div>
+
         <p class="detail">
             Provider ID: <span th:text="${provider.id}">1</span>
-            | Status: <span th:text="${provider.status}">pending</span>
+            | Status: <strong th:text="${provider.status}">pending</strong>
         </p>
 
+        <!--
+            FIX: OTP completion form was completely missing.
+            CompletionOtpDto and BookingService#completeWithOtp existed but there was
+            no HTML or controller wiring. Added here so providers can mark jobs done.
+        -->
+        <section class="card" style="margin-bottom:24px;">
+            <h2>Mark Job as Completed (OTP)</h2>
+            <p class="detail">
+                When you finish a job, ask the customer for their 6-digit OTP and enter it below.
+            </p>
+            <div class="notice" th:if="${otpError}" th:text="${otpError}" style="color:#c0392b;"></div>
+            <form th:action="@{/bookings/complete}" th:object="${otpDto}" method="post"
+                  style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+                <div>
+                    <label for="bookingId">Booking ID</label>
+                    <input id="bookingId" type="number" th:field="*{bookingId}"
+                           placeholder="e.g. 42" style="width:120px;" required>
+                    <div class="error" th:errors="*{bookingId}"></div>
+                </div>
+                <div>
+                    <label for="otp">Customer OTP</label>
+                    <input id="otp" type="text" th:field="*{otp}"
+                           placeholder="6-digit OTP" maxlength="6" style="width:140px;" required>
+                    <div class="error" th:errors="*{otp}"></div>
+                </div>
+                <button type="submit" class="btn-success">Complete Job</button>
+            </form>
+        </section>
+
         <h2>Your Booking Requests</h2>
-        <h3 th:if="${#lists.isEmpty(bookings)}">No Booking Requests Found</h3>
+        <p class="detail" th:if="${#lists.isEmpty(bookings)}">No booking requests yet.</p>
 
         <div class="grid" th:if="${!#lists.isEmpty(bookings)}">
             <article class="card" th:each="booking : ${bookings}">
-                <p><b>Booking ID:</b> <span th:text="${booking.id}">1</span></p>
-                <p><b>Provider Phone:</b> <span th:text="${booking.providerPhone}">Phone</span></p>
-                <p><b>User Name:</b> <span th:text="${booking.userName}">User</span></p>
+                <p><b>Booking #<span th:text="${booking.id}">1</span></b></p>
+                <p><b>Customer:</b> <span th:text="${booking.userName}">User</span></p>
                 <p><b>Service:</b> <span th:text="${booking.serviceType}">Service</span></p>
                 <p><b>City:</b> <span th:text="${booking.city}">City</span></p>
-                <p><b>Booking Date:</b> <span th:text="${booking.bookingDate}">Date</span></p>
-                <p><b>Status:</b> <span th:text="${booking.status}">Pending</span></p>
-                <div class="actions">
-                    <form th:action="@{/bookings/status}" method="post">
+                <p><b>Area:</b> <span th:text="${booking.area}">Area</span></p>
+                <p><b>Date:</b> <span th:text="${booking.bookingDate}">Date</span></p>
+                <p><b>Time:</b> <span th:text="${booking.preferredTime}">Time</span></p>
+                <p><b>Problem:</b> <span th:text="${booking.problemDescription}">Problem</span></p>
+                <p>
+                    <b>Status:</b>
+                    <span th:text="${booking.status}"
+                          th:classappend="${booking.status == 'Completed'} ? 'text-success'
+                                       : (${booking.status == 'Rejected'} ? 'text-danger' : '')">
+                        Pending
+                    </span>
+                </p>
+
+                <!--
+                    FIX: Previously Accept and Reject buttons appeared for ALL bookings,
+                    including already-completed or accepted ones. Now they are shown
+                    only when the booking is in Pending state.
+                -->
+                <div class="actions" th:if="${booking.status == 'Pending'}">
+                    <form th:action="@{/bookings/status}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${booking.id}">
                         <input type="hidden" name="status" value="Accepted">
                         <button class="btn-success" type="submit">Accept</button>
                     </form>
-                    <form th:action="@{/bookings/status}" method="post">
+                    <form th:action="@{/bookings/status}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${booking.id}">
                         <input type="hidden" name="status" value="Rejected">
                         <button class="btn-danger" type="submit">Reject</button>
                     </form>
+                </div>
+
+                <!-- Show completion OTP to provider after acceptance -->
+                <div class="notice" th:if="${booking.status == 'Accepted'}">
+                    Share this OTP with the customer after the job is done:
+                    <strong th:text="${booking.completionOtp}">000000</strong>
                 </div>
             </article>
         </div>
