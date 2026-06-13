@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Providers | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" th:href="@{/customers/dashboard}">Rapid Reach</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+<main class="section">
+    <div class="container">
+        <h1>Available Service Providers</h1>
+        <p class="detail" th:text="'Results for ' + ${search.serviceType} + ' in ' + ${search.city}">Results</p>
+
+        <h2 th:if="${#lists.isEmpty(providers)}">No Provider Found</h2>
+
+        <div class="grid" th:if="${!#lists.isEmpty(providers)}">
+            <article class="card" th:each="provider : ${providers}">
+                <h2 th:text="${provider.name}">Provider Name</h2>
+                <p><b>Service:</b> <span th:text="${provider.serviceType}">Service</span></p>
+                <p><b>City:</b> <span th:text="${provider.city}">City</span></p>
+                <p><b>Phone:</b> <span th:text="${provider.phone}">Phone</span></p>
+                <p><b>Experience:</b> <span th:text="${provider.pastexperience}">Experience</span></p>
+                <p><b>Qualification:</b> <span th:text="${provider.highestQualification}">Qualification</span></p>
+                <a class="btn" th:href="@{/bookings/new(providerId=${provider.id})}">Book Now</a>
+            </article>
+        </div>
+
+        <div class="actions">
+            <a class="btn btn-secondary" th:href="@{/customers/dashboard}">Back to Search</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

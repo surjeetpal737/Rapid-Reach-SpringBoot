@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="form-page">
+<main class="form-box">
+    <h1>Confirm Booking</h1>
+    <p><b>User:</b> <span th:text="${customer.name}">User</span></p>
+    <p><b>Provider:</b> <span th:text="${provider.name}">Provider</span></p>
+    <p><b>Service:</b> <span th:text="${provider.serviceType}">Service</span></p>
+    <p><b>City:</b> <span th:text="${provider.city}">City</span></p>
+
+    <form th:action="@{/bookings}" th:object="${bookingRequest}" method="post">
+        <input type="hidden" th:field="*{providerId}">
+        <div class="actions">
+            <button type="submit">Confirm Booking</button>
+            <a class="btn btn-secondary" th:href="@{/customers/dashboard}">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

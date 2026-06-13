@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" th:href="@{/}">Rapid Reach</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+<main class="section">
+    <div class="container">
+        <h1 th:text="'Welcome, ' + ${customer.name}">Welcome</h1>
+        <section class="form-box wide">
+            <h2>Search Service Providers</h2>
+            <form th:action="@{/providers/search}" th:object="${search}" method="post">
+                <label for="serviceType">Technician Type</label>
+                <input id="serviceType" type="text" th:field="*{serviceType}" placeholder="Plumber" required>
+                <div class="error" th:errors="*{serviceType}"></div>
+
+                <label for="city">City</label>
+                <input id="city" type="text" th:field="*{city}" placeholder="Indore" required>
+                <div class="error" th:errors="*{city}"></div>
+
+                <div class="actions">
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+</body>
+</html>

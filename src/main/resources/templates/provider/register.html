@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Registration | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="form-page">
+<main class="form-box wide">
+    <h1>Service Provider Registration</h1>
+    <form th:action="@{/providers/register}" th:object="${provider}" method="post">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" th:field="*{name}" required>
+        <div class="error" th:errors="*{name}"></div>
+
+        <label for="serviceType">Service Type</label>
+        <input id="serviceType" type="text" th:field="*{serviceType}" placeholder="Plumber" required>
+        <div class="error" th:errors="*{serviceType}"></div>
+
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="tel" th:field="*{phone}" required>
+        <div class="error" th:errors="*{phone}"></div>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" required>
+        <div class="error" th:errors="*{email}"></div>
+
+        <label for="city">City</label>
+        <input id="city" type="text" th:field="*{city}" required>
+        <div class="error" th:errors="*{city}"></div>
+
+        <label for="age">Age</label>
+        <input id="age" type="number" th:field="*{age}" required>
+        <div class="error" th:errors="*{age}"></div>
+
+        <label for="gender">Gender</label>
+        <select id="gender" th:field="*{gender}" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <div class="error" th:errors="*{gender}"></div>
+
+        <label for="pastexperience">Past Experience</label>
+        <input id="pastexperience" type="text" th:field="*{pastexperience}" placeholder="2 Years in Plumbing" required>
+        <div class="error" th:errors="*{pastexperience}"></div>
+
+        <label for="highestQualification">Highest Qualification</label>
+        <input id="highestQualification" type="text" th:field="*{highestQualification}" placeholder="Diploma" required>
+        <div class="error" th:errors="*{highestQualification}"></div>
+
+        <label for="experties">Expertise</label>
+        <input id="experties" type="text" th:field="*{experties}" placeholder="Electrical, Carpentry" required>
+        <div class="error" th:errors="*{experties}"></div>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" th:field="*{password}" required>
+        <div class="error" th:errors="*{password}"></div>
+
+        <div class="actions">
+            <button type="submit">Register</button>
+            <a class="btn btn-secondary" th:href="@{/providers/login}">Login</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

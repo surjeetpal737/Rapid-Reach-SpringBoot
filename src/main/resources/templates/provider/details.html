@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Profile | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="section">
+    <div class="container">
+        <h1 th:text="'Welcome, ' + ${provider.name}">Welcome</h1>
+        <section class="card">
+            <h2>Your Profile Details</h2>
+            <table>
+                <tr><th>Full Name</th><td th:text="${provider.name}">Name</td></tr>
+                <tr><th>Service Type</th><td th:text="${provider.serviceType}">Service</td></tr>
+                <tr><th>Phone</th><td th:text="${provider.phone}">Phone</td></tr>
+                <tr><th>Email</th><td th:text="${provider.email}">Email</td></tr>
+                <tr><th>Location</th><td th:text="${provider.city}">City</td></tr>
+                <tr><th>Status</th><td th:text="${provider.status}">Pending Approval</td></tr>
+            </table>
+            <div class="actions">
+                <a class="btn" th:href="@{/providers/dashboard}">Dashboard</a>
+                <a class="btn btn-secondary" th:href="@{/logout}">Logout</a>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

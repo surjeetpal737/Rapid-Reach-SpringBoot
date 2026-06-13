@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Reach | Home</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" th:href="@{/}">Rapid Reach</a>
+        <div class="nav-actions">
+            <a class="btn" th:href="@{/providers/register}">Service Provider</a>
+            <a class="btn btn-secondary" th:href="@{/customers/login}">User Login</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-inner">
+        <h1>Welcome to Rapid Reach</h1>
+        <p>Your trusted platform to connect with verified service providers instantly.</p>
+        <div class="actions" style="justify-content:center">
+            <a class="btn" th:href="@{/providers/register}">Service Provider</a>
+            <a class="btn btn-secondary" th:href="@{/customers/login}">User Login</a>
+            <a class="btn btn-secondary" th:href="@{/customers/register}">User Registration</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2>Why Choose Rapid Reach?</h2>
+        <p class="detail">A simple flow for customers to find local providers and for providers to manage requests.</p>
+        <div class="grid">
+            <article class="card">
+                <h3>Verified Providers</h3>
+                <p class="detail">Provider registrations are stored with status so approval workflows can be added cleanly.</p>
+            </article>
+            <article class="card">
+                <h3>Instant Connection</h3>
+                <p class="detail">Search by technician type and city, then book the selected provider.</p>
+            </article>
+            <article class="card">
+                <h3>Provider Dashboard</h3>
+                <p class="detail">Providers can view booking requests and accept or reject them.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2025 Rapid Reach | Developed by Surjeet</p>
+</footer>
+</body>
+</html>

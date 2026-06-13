@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Dashboard | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" th:href="@{/providers/dashboard}">Rapid Reach</a>
+        <div class="nav-actions">
+            <a th:href="@{/providerDetail.jsp}">Profile</a>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+</nav>
+<main class="section">
+    <div class="container">
+        <h1 th:text="'Welcome, ' + ${provider.name}">Welcome</h1>
+        <p class="detail">
+            Provider ID: <span th:text="${provider.id}">1</span>
+            | Status: <span th:text="${provider.status}">pending</span>
+        </p>
+
+        <h2>Your Booking Requests</h2>
+        <h3 th:if="${#lists.isEmpty(bookings)}">No Booking Requests Found</h3>
+
+        <div class="grid" th:if="${!#lists.isEmpty(bookings)}">
+            <article class="card" th:each="booking : ${bookings}">
+                <p><b>Booking ID:</b> <span th:text="${booking.id}">1</span></p>
+                <p><b>Provider Phone:</b> <span th:text="${booking.providerPhone}">Phone</span></p>
+                <p><b>User Name:</b> <span th:text="${booking.userName}">User</span></p>
+                <p><b>Service:</b> <span th:text="${booking.serviceType}">Service</span></p>
+                <p><b>City:</b> <span th:text="${booking.city}">City</span></p>
+                <p><b>Booking Date:</b> <span th:text="${booking.bookingDate}">Date</span></p>
+                <p><b>Status:</b> <span th:text="${booking.status}">Pending</span></p>
+                <div class="actions">
+                    <form th:action="@{/bookings/status}" method="post">
+                        <input type="hidden" name="id" th:value="${booking.id}">
+                        <input type="hidden" name="status" value="Accepted">
+                        <button class="btn-success" type="submit">Accept</button>
+                    </form>
+                    <form th:action="@{/bookings/status}" method="post">
+                        <input type="hidden" name="id" th:value="${booking.id}">
+                        <input type="hidden" name="status" value="Rejected">
+                        <button class="btn-danger" type="submit">Reject</button>
+                    </form>
+                </div>
+            </article>
+        </div>
+    </div>
+</main>
+</body>
+</html>

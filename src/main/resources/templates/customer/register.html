@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="form-page">
+<main class="form-box">
+    <h1>User Registration</h1>
+    <form th:action="@{/customers/register}" th:object="${customer}" method="post">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" th:field="*{name}" required>
+        <div class="error" th:errors="*{name}"></div>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" required>
+        <div class="error" th:errors="*{email}"></div>
+
+        <label for="phone">Phone</label>
+        <input id="phone" type="text" th:field="*{phone}" required>
+        <div class="error" th:errors="*{phone}"></div>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" th:field="*{password}" required>
+        <div class="error" th:errors="*{password}"></div>
+
+        <div class="actions">
+            <button type="submit">Register</button>
+            <a class="btn btn-secondary" th:href="@{/customers/login}">Login</a>
+            <a class="btn btn-secondary" th:href="@{/}">Home</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

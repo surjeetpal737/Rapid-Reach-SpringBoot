@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Login | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="form-page">
+<main class="form-box">
+    <h1>Provider Login</h1>
+    <div class="notice" th:if="${loginError}" th:text="${loginError}">Invalid email or password.</div>
+    <form th:action="@{/providers/login}" th:object="${login}" method="post">
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" required>
+        <div class="error" th:errors="*{email}"></div>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" th:field="*{password}" required>
+        <div class="error" th:errors="*{password}"></div>
+
+        <div class="actions">
+            <button type="submit">Login</button>
+            <a class="btn btn-secondary" th:href="@{/providers/register}">Register</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
