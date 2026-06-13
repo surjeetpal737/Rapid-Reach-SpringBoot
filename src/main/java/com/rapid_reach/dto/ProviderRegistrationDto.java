@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProviderRegistrationDto {
 
@@ -32,6 +33,10 @@ public class ProviderRegistrationDto {
     private String city;
 
     @NotBlank
+    @Size(max = 100)
+    private String area;
+
+    @NotBlank
     @Size(min = 4, max = 100)
     private String password;
 
@@ -54,6 +59,8 @@ public class ProviderRegistrationDto {
     @NotBlank
     @Size(max = 160)
     private String experties;
+
+    private MultipartFile idProof;
 
     public String getName() {
         return name;
@@ -93,6 +100,14 @@ public class ProviderRegistrationDto {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getPassword() {
@@ -141,5 +156,13 @@ public class ProviderRegistrationDto {
 
     public void setExperties(String experties) {
         this.experties = experties;
+    }
+
+    public MultipartFile getIdProof() {
+        return idProof;
+    }
+
+    public void setIdProof(MultipartFile idProof) {
+        this.idProof = idProof;
     }
 }

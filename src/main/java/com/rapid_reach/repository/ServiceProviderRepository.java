@@ -12,4 +12,10 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
     Optional<ServiceProvider> findByEmailAndPassword(String email, String password);
 
     List<ServiceProvider> findByServiceTypeIgnoreCaseAndCityIgnoreCase(String serviceType, String city);
+
+    Optional<ServiceProvider> findByEmail(String email);
+
+    List<ServiceProvider> findByServiceTypeIgnoreCaseAndCityIgnoreCaseAndStatusIgnoreCase(String serviceType, String city, String status);
+
+    long countByStatusIgnoreCase(String status);
 }

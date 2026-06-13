@@ -56,7 +56,7 @@ public class BookingController {
             return "customer/book-service";
         }
 
-        bookingService.createBooking(customer, dto.getProviderId());
+        bookingService.createBooking(customer, dto);
         return "redirect:/customers/dashboard";
     }
 

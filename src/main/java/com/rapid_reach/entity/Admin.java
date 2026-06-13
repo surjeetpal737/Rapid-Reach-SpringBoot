@@ -8,12 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
-public class Customer {
+@Table(name = "admins")
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "admin_id")
     private Long id;
 
     @Column(nullable = false, length = 120)
@@ -22,17 +22,8 @@ public class Customer {
     @Column(nullable = false, unique = true, length = 160)
     private String email;
 
-    @Column(nullable = false, length = 20)
-    private String phone;
-
     @Column(nullable = false)
     private String password;
-
-    @Column(length = 255)
-    private String address;
-
-    @Column(length = 100)
-    private String city;
 
     public Long getId() {
         return id;
@@ -58,35 +49,11 @@ public class Customer {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 }

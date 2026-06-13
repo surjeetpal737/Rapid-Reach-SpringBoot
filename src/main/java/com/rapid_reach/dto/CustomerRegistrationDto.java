@@ -24,6 +24,12 @@ public class CustomerRegistrationDto {
     @Size(min = 4, max = 100)
     private String password;
 
+    @Size(max = 255)
+    private String address;
+
+    @Size(max = 100)
+    private String city;
+
     public String getName() {
         return name;
     }
@@ -54,5 +60,21 @@ public class CustomerRegistrationDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

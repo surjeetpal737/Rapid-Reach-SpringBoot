@@ -31,6 +31,9 @@ public class ServiceProvider {
     @Column(nullable = false, length = 100)
     private String city;
 
+    @Column(length = 100)
+    private String area;
+
     @Column(nullable = false)
     private String password;
 
@@ -51,6 +54,12 @@ public class ServiceProvider {
 
     @Column(nullable = false, length = 160)
     private String experties;
+
+    @Column(name = "id_proof_path", length = 255)
+    private String idProofPath;
+
+    @Column(name = "rejection_reason", length = 255)
+    private String rejectionReason;
 
     public Long getId() {
         return id;
@@ -98,6 +107,14 @@ public class ServiceProvider {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getPassword() {
@@ -154,5 +171,21 @@ public class ServiceProvider {
 
     public void setExperties(String experties) {
         this.experties = experties;
+    }
+
+    public String getIdProofPath() {
+        return idProofPath;
+    }
+
+    public void setIdProofPath(String idProofPath) {
+        this.idProofPath = idProofPath;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }
