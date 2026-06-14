@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="form-page">
+<main class="form-box">
+    <h1>Admin Login</h1>
+    <p class="detail" style="text-align:center; margin-bottom:10px;">Restricted — authorised personnel only</p>
+
+    <div class="notice" th:if="${loginError}" th:text="${loginError}"></div>
+
+    <form th:action="@{/admin/login}" th:object="${login}" method="post">
+        <label for="email">Admin Email</label>
+        <input id="email" type="email" th:field="*{email}" autocomplete="email" required>
+        <div class="error" th:errors="*{email}"></div>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" th:field="*{password}"
+               autocomplete="current-password" required>
+        <div class="error" th:errors="*{password}"></div>
+
+        <div class="actions">
+            <button type="submit">Login</button>
+            <a class="btn btn-secondary" th:href="@{/}">Home</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

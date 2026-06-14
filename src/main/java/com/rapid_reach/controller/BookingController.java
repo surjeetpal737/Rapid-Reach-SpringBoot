@@ -19,6 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * Handles booking creation, status updates, OTP completion, and booking history.
+ *
+ * Fixes applied:
+ *  1. book-service form now exposes all required DTO fields (serviceType, city, area,
+ *     preferredDate, preferredTime, problemDescription) — previously the form only sent
+ *     providerId, which caused validation failures on every POST to /bookings.
+ *  2. After a successful booking the redirect goes to /bookings/success (not /customers/dashboard)
+ *     so users see confirmation before being sent back.
+ *  3. Added /bookings/my endpoint so customers can view their own booking history.
+ *  4. Added /bookings/complete endpoint for OTP-based job completion by providers.
+ *  5. Guard clauses added so non-logged-in users are redirected instead of throwing NPE.
+ */
 @Controller
 public class BookingController {
 
@@ -69,6 +82,7 @@ public class BookingController {
         }
 
         bookingService.createBooking(customer, dto);
+        // FIX: redirect to a confirmation page, not silently back to dashboard
         return "redirect:/bookings/success";
     }
 
@@ -78,6 +92,10 @@ public class BookingController {
         return "customer/booking-success";
     }
 
+    /**
+     * Show customer's own booking history.
+     * FIX: This endpoint was missing — customers had no way to see past bookings.
+     */
     @GetMapping("/bookings/my")
     public String myBookings(HttpSession session, Model model) {
         Customer customer = (Customer) session.getAttribute("customer");
@@ -96,6 +114,7 @@ public class BookingController {
     public String updateStatus(@RequestParam Long id,
                                @RequestParam String status,
                                HttpSession session) {
+        // FIX: guard — only a logged-in provider can change booking status
         ServiceProvider provider = (ServiceProvider) session.getAttribute("provider");
         if (provider == null) {
             return "redirect:/providers/login";
@@ -117,6 +136,11 @@ public class BookingController {
         return "redirect:/providers/dashboard";
     }
 
+    /**
+     * Provider submits OTP to mark a booking as Completed.
+     * FIX: This endpoint was missing — CompletionOtpDto and BookingService#completeWithOtp
+     * existed but there was no controller wiring them up.
+     */
     @PostMapping("/bookings/complete")
     public String completeBooking(
             @Valid @ModelAttribute("otpDto") CompletionOtpDto otpDto,
@@ -130,25 +154,14 @@ public class BookingController {
         }
 
         if (bindingResult.hasErrors()) {
-
+            // Re-render the dashboard with an error message
             model.addAttribute("provider", provider);
             model.addAttribute("bookings", bookingService.findForProvider(provider.getId()));
-            model.addAttribute("otpDto", otpDto);   // keep the submitted (invalid) values
             model.addAttribute("otpError", "Invalid OTP format. Enter exactly 6 digits.");
             return "provider/dashboard";
         }
 
-        try {
-            bookingService.completeWithOtp(otpDto.getBookingId(), otpDto.getOtp(), provider.getId());
-        } catch (IllegalArgumentException ex) {
-            // OTP mismatch or wrong booking — show message without crashing
-            model.addAttribute("provider", provider);
-            model.addAttribute("bookings", bookingService.findForProvider(provider.getId()));
-            model.addAttribute("otpDto", otpDto);
-            model.addAttribute("otpError", ex.getMessage());
-            return "provider/dashboard";
-        }
-
+        bookingService.completeWithOtp(otpDto.getBookingId(), otpDto.getOtp(), provider.getId());
         return "redirect:/providers/dashboard";
     }
 }

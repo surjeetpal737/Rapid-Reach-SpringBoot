@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Rapid Reach</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" th:href="@{/admin/dashboard}">Rapid Reach Admin</a>
+        <div class="nav-actions">
+            <a th:href="@{/admin/providers}">Manage Providers</a>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<main class="section">
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <!-- Summary cards -->
+        <div class="grid" style="margin-bottom:32px;">
+            <div class="card" style="text-align:center;">
+                <h2 style="font-size:2.5rem; margin:0;"
+                    th:text="${pendingProviders.size()}">0</h2>
+                <p class="detail">Pending Provider Approvals</p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <h2 style="font-size:2.5rem; margin:0;"
+                    th:text="${allBookings.size()}">0</h2>
+                <p class="detail">Total Bookings</p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <h2 style="font-size:2.5rem; margin:0;"
+                    th:text="${services.size()}">0</h2>
+                <p class="detail">Active Service Categories</p>
+            </div>
+        </div>
+
+        <!-- Pending providers needing approval -->
+        <section>
+            <h2>Pending Provider Approvals</h2>
+            <p class="detail" th:if="${#lists.isEmpty(pendingProviders)}">
+                No pending approvals. All providers have been reviewed.
+            </p>
+
+            <div class="grid" th:if="${!#lists.isEmpty(pendingProviders)}">
+                <article class="card" th:each="provider : ${pendingProviders}">
+                    <h3 th:text="${provider.name}">Name</h3>
+                    <p><b>Service:</b> <span th:text="${provider.serviceType}">Type</span></p>
+                    <p><b>City:</b> <span th:text="${provider.city}">City</span></p>
+                    <p><b>Email:</b> <span th:text="${provider.email}">Email</span></p>
+                    <p><b>Phone:</b> <span th:text="${provider.phone}">Phone</span></p>
+                    <p><b>Age:</b> <span th:text="${provider.age}">Age</span></p>
+                    <p><b>Qualification:</b> <span th:text="${provider.highestQualification}">Qual</span></p>
+                    <p><b>Experience:</b> <span th:text="${provider.pastexperience}">Exp</span></p>
+
+                    <div class="actions">
+                        <form th:action="@{/admin/providers/approve}" method="post"
+                              style="display:inline;">
+                            <input type="hidden" name="providerId" th:value="${provider.id}">
+                            <button class="btn-success" type="submit">Approve</button>
+                        </form>
+                        <form th:action="@{/admin/providers/reject}" method="post"
+                              style="display:inline;">
+                            <input type="hidden" name="providerId" th:value="${provider.id}">
+                            <input type="text" name="reason"
+                                   placeholder="Rejection reason (optional)"
+                                   style="width:200px; margin-right:8px;">
+                            <button class="btn-danger" type="submit">Reject</button>
+                        </form>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Recent bookings summary -->
+        <section style="margin-top:40px;">
+            <h2>Recent Bookings</h2>
+            <p class="detail" th:if="${#lists.isEmpty(allBookings)}">No bookings recorded yet.</p>
+
+            <table th:if="${!#lists.isEmpty(allBookings)}">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>Provider</th>
+                    <th>Service</th>
+                    <th>City</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b : ${allBookings}">
+                    <td th:text="${b.id}">1</td>
+                    <td th:text="${b.userName}">User</td>
+                    <td th:text="${b.providerName}">Provider</td>
+                    <td th:text="${b.serviceType}">Service</td>
+                    <td th:text="${b.city}">City</td>
+                    <td th:text="${b.bookingDate}">Date</td>
+                    <td th:text="${b.status}">Status</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</main>
+</body>
+</html>

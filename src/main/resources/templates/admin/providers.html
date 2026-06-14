@@ -25,52 +25,52 @@
 
         <table th:if="${!#lists.isEmpty(providers)}">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Service</th>
-                    <th>City</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Service</th>
+                <th>City</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="p : ${providers}">
-                    <td th:text="${p.id}">1</td>
-                    <td th:text="${p.name}">Name</td>
-                    <td th:text="${p.serviceType}">Type</td>
-                    <td th:text="${p.city}">City</td>
-                    <td th:text="${p.email}">Email</td>
-                    <td>
+            <tr th:each="p : ${providers}">
+                <td th:text="${p.id}">1</td>
+                <td th:text="${p.name}">Name</td>
+                <td th:text="${p.serviceType}">Type</td>
+                <td th:text="${p.city}">City</td>
+                <td th:text="${p.email}">Email</td>
+                <td>
                         <span th:text="${p.status}"
                               th:style="${p.status == 'Approved'} ? 'color:green;font-weight:700'
                                       : (${p.status == 'Rejected'} ? 'color:red;font-weight:700'
                                       : 'color:#e67e22;font-weight:700')">
                             Status
                         </span>
-                    </td>
-                    <td>
-                        <div class="actions" style="gap:6px;margin-top:0;">
-                            <form th:action="@{/admin/providers/approve}" method="post"
-                                  style="display:inline;"
-                                  th:if="${p.status != 'Approved'}">
-                                <input type="hidden" name="providerId" th:value="${p.id}">
-                                <button class="btn-success" type="submit"
-                                        style="padding:6px 12px; font-size:0.85rem;">Approve</button>
-                            </form>
-                            <form th:action="@{/admin/providers/reject}" method="post"
-                                  style="display:inline;"
-                                  th:if="${p.status != 'Rejected'}">
-                                <input type="hidden" name="providerId" th:value="${p.id}">
-                                <input type="text" name="reason" placeholder="Reason"
-                                       style="width:130px; padding:6px; font-size:0.85rem;">
-                                <button class="btn-danger" type="submit"
-                                        style="padding:6px 12px; font-size:0.85rem;">Reject</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+                </td>
+                <td>
+                    <div class="actions" style="gap:6px;margin-top:0;">
+                        <form th:action="@{/admin/providers/approve}" method="post"
+                              style="display:inline;"
+                              th:if="${p.status != 'Approved'}">
+                            <input type="hidden" name="providerId" th:value="${p.id}">
+                            <button class="btn-success" type="submit"
+                                    style="padding:6px 12px; font-size:0.85rem;">Approve</button>
+                        </form>
+                        <form th:action="@{/admin/providers/reject}" method="post"
+                              style="display:inline;"
+                              th:if="${p.status != 'Rejected'}">
+                            <input type="hidden" name="providerId" th:value="${p.id}">
+                            <input type="text" name="reason" placeholder="Reason"
+                                   style="width:130px; padding:6px; font-size:0.85rem;">
+                            <button class="btn-danger" type="submit"
+                                    style="padding:6px 12px; font-size:0.85rem;">Reject</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
 

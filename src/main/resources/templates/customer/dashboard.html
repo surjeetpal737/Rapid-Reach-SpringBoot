@@ -10,21 +10,32 @@
 <nav class="topbar">
     <div class="topbar-inner">
         <a class="brand" th:href="@{/}">Rapid Reach</a>
-        <a th:href="@{/logout}">Logout</a>
+        <div class="nav-actions">
+            <!-- FIX: Added "My Bookings" link — customers had no way to navigate to their bookings -->
+            <a th:href="@{/bookings/my}">My Bookings</a>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
     </div>
 </nav>
+
 <main class="section">
     <div class="container">
         <h1 th:text="'Welcome, ' + ${customer.name}">Welcome</h1>
+
+        <!-- Flash message after password reset or profile update -->
+        <div class="notice" th:if="${successMessage}" th:text="${successMessage}"></div>
+
         <section class="form-box wide">
             <h2>Search Service Providers</h2>
             <form th:action="@{/providers/search}" th:object="${search}" method="post">
                 <label for="serviceType">Technician Type</label>
-                <input id="serviceType" type="text" th:field="*{serviceType}" placeholder="Plumber" required>
+                <input id="serviceType" type="text" th:field="*{serviceType}"
+                       placeholder="e.g. Plumber, Electrician" required>
                 <div class="error" th:errors="*{serviceType}"></div>
 
                 <label for="city">City</label>
-                <input id="city" type="text" th:field="*{city}" placeholder="Indore" required>
+                <input id="city" type="text" th:field="*{city}"
+                       placeholder="e.g. Indore" required>
                 <div class="error" th:errors="*{city}"></div>
 
                 <div class="actions">
