@@ -9,7 +9,10 @@
 <body class="form-page">
 <main class="form-box wide">
     <h1>Service Provider Registration</h1>
-    <form th:action="@{/providers/register}" th:object="${provider}" method="post">
+
+    <form th:action="@{/providers/register}" th:object="${provider}" method="post"
+          enctype="multipart/form-data">
+
         <label for="name">Full Name</label>
         <input id="name" type="text" th:field="*{name}" required>
         <div class="error" th:errors="*{name}"></div>
@@ -30,8 +33,12 @@
         <input id="city" type="text" th:field="*{city}" required>
         <div class="error" th:errors="*{city}"></div>
 
+        <label for="area">Area / Locality</label>
+        <input id="area" type="text" th:field="*{area}" placeholder="e.g. Vijay Nagar" required>
+        <div class="error" th:errors="*{area}"></div>
+
         <label for="age">Age</label>
-        <input id="age" type="number" th:field="*{age}" required>
+        <input id="age" type="number" th:field="*{age}" min="18" max="100" required>
         <div class="error" th:errors="*{age}"></div>
 
         <label for="gender">Gender</label>
@@ -44,24 +51,30 @@
         <div class="error" th:errors="*{gender}"></div>
 
         <label for="pastexperience">Past Experience</label>
-        <input id="pastexperience" type="text" th:field="*{pastexperience}" placeholder="2 Years in Plumbing" required>
+        <input id="pastexperience" type="text" th:field="*{pastexperience}"
+               placeholder="e.g. 2 Years in Plumbing" required>
         <div class="error" th:errors="*{pastexperience}"></div>
 
         <label for="highestQualification">Highest Qualification</label>
-        <input id="highestQualification" type="text" th:field="*{highestQualification}" placeholder="Diploma" required>
+        <input id="highestQualification" type="text" th:field="*{highestQualification}"
+               placeholder="e.g. Diploma" required>
         <div class="error" th:errors="*{highestQualification}"></div>
 
         <label for="experties">Expertise</label>
-        <input id="experties" type="text" th:field="*{experties}" placeholder="Electrical, Carpentry" required>
+        <input id="experties" type="text" th:field="*{experties}"
+               placeholder="e.g. Electrical, Carpentry" required>
         <div class="error" th:errors="*{experties}"></div>
 
         <label for="password">Password</label>
         <input id="password" type="password" th:field="*{password}" required>
         <div class="error" th:errors="*{password}"></div>
+        <label for="idProof">ID Proof <small style="font-weight:400;">(optional — image or PDF, max 5 MB)</small></label>
+        <input id="idProof" type="file" name="idProof" accept="image/*,application/pdf">
 
         <div class="actions">
             <button type="submit">Register</button>
             <a class="btn btn-secondary" th:href="@{/providers/login}">Login</a>
+            <a class="btn btn-secondary" th:href="@{/}">Home</a>
         </div>
     </form>
 </main>

@@ -69,7 +69,6 @@ public class BookingController {
         }
 
         bookingService.createBooking(customer, dto);
-        // FIX: redirect to a confirmation page, not silently back to dashboard
         return "redirect:/bookings/success";
     }
 
@@ -78,7 +77,6 @@ public class BookingController {
     public String success() {
         return "customer/booking-success";
     }
-
 
     @GetMapping("/bookings/my")
     public String myBookings(HttpSession session, Model model) {
@@ -98,7 +96,6 @@ public class BookingController {
     public String updateStatus(@RequestParam Long id,
                                @RequestParam String status,
                                HttpSession session) {
-        // FIX: guard — only a logged-in provider can change booking status
         ServiceProvider provider = (ServiceProvider) session.getAttribute("provider");
         if (provider == null) {
             return "redirect:/providers/login";
@@ -133,14 +130,25 @@ public class BookingController {
         }
 
         if (bindingResult.hasErrors()) {
-            // Re-render the dashboard with an error message
+
             model.addAttribute("provider", provider);
             model.addAttribute("bookings", bookingService.findForProvider(provider.getId()));
+            model.addAttribute("otpDto", otpDto);   // keep the submitted (invalid) values
             model.addAttribute("otpError", "Invalid OTP format. Enter exactly 6 digits.");
             return "provider/dashboard";
         }
 
-        bookingService.completeWithOtp(otpDto.getBookingId(), otpDto.getOtp(), provider.getId());
+        try {
+            bookingService.completeWithOtp(otpDto.getBookingId(), otpDto.getOtp(), provider.getId());
+        } catch (IllegalArgumentException ex) {
+            // OTP mismatch or wrong booking — show message without crashing
+            model.addAttribute("provider", provider);
+            model.addAttribute("bookings", bookingService.findForProvider(provider.getId()));
+            model.addAttribute("otpDto", otpDto);
+            model.addAttribute("otpError", ex.getMessage());
+            return "provider/dashboard";
+        }
+
         return "redirect:/providers/dashboard";
     }
 }

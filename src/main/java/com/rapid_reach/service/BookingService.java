@@ -9,17 +9,18 @@ import com.rapid_reach.repository.BookingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final ProviderService providerService;
-    private static final Random RANDOM = new Random();
+
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     public BookingService(BookingRepository bookingRepository, ProviderService providerService) {
         this.bookingRepository = bookingRepository;
@@ -43,8 +44,8 @@ public class BookingService {
         booking.setPreferredTime(dto.getPreferredTime());
         booking.setProblemDescription(dto.getProblemDescription());
         booking.setStatus("Pending");
-        // 6-digit OTP: 100000–999999
-        booking.setCompletionOtp(String.valueOf(100000 + RANDOM.nextInt(900000)));
+        // 6-digit OTP: 100000–999999, generated with SecureRandom
+        booking.setCompletionOtp(String.valueOf(100000 + SECURE_RANDOM.nextInt(900000)));
         booking.setCreatedAt(LocalDateTime.now());
         return bookingRepository.save(booking);
     }

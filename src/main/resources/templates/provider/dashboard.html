@@ -21,7 +21,7 @@
     <div class="container">
         <h1 th:text="'Welcome, ' + ${provider.name}">Welcome</h1>
 
-        <!-- Approval status notice -->
+        <!-- Approval status notices -->
         <div class="notice" th:if="${provider.status == 'Pending'}">
             ⏳ Your account is pending admin approval. You can view bookings once approved.
         </div>
@@ -35,20 +35,18 @@
 
         <p class="detail">
             Provider ID: <span th:text="${provider.id}">1</span>
-            | Status: <strong th:text="${provider.status}">pending</strong>
+            | Status: <strong th:text="${provider.status}">Pending</strong>
         </p>
 
-        <!--
-            FIX: OTP completion form was completely missing.
-            CompletionOtpDto and BookingService#completeWithOtp existed but there was
-            no HTML or controller wiring. Added here so providers can mark jobs done.
-        -->
+        <!-- OTP job-completion form -->
         <section class="card" style="margin-bottom:24px;">
             <h2>Mark Job as Completed (OTP)</h2>
             <p class="detail">
-                When you finish a job, ask the customer for their 6-digit OTP and enter it below.
+                When you finish a job, ask the customer for their 6-digit OTP
+                (visible on their "My Bookings" page) and enter it below.
             </p>
-            <div class="notice" th:if="${otpError}" th:text="${otpError}" style="color:#c0392b;"></div>
+            <div class="notice" th:if="${otpError}" th:text="${otpError}"
+                 style="color:#c0392b;"></div>
             <form th:action="@{/bookings/complete}" th:object="${otpDto}" method="post"
                   style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
                 <div>
@@ -89,11 +87,7 @@
                     </span>
                 </p>
 
-                <!--
-                    FIX: Previously Accept and Reject buttons appeared for ALL bookings,
-                    including already-completed or accepted ones. Now they are shown
-                    only when the booking is in Pending state.
-                -->
+                <!-- Accept / Reject buttons — only shown when booking is Pending -->
                 <div class="actions" th:if="${booking.status == 'Pending'}">
                     <form th:action="@{/bookings/status}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${booking.id}">
@@ -102,15 +96,18 @@
                     </form>
                     <form th:action="@{/bookings/status}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${booking.id}">
-                        <input type="hidden" name="status" value="Rejected">
+                        <input type="hidden" name="status" value="Cancelled">
                         <button class="btn-danger" type="submit">Reject</button>
                     </form>
                 </div>
-
-                <!-- Show completion OTP to provider after acceptance -->
                 <div class="notice" th:if="${booking.status == 'Accepted'}">
-                    Share this OTP with the customer after the job is done:
-                    <strong th:text="${booking.completionOtp}">000000</strong>
+                    ✅ Booking accepted. Ask the customer for their 6-digit OTP once the job is
+                    done, then enter it in the <strong>Mark Job as Completed</strong> form above.
+                </div>
+
+                <div class="notice" th:if="${booking.status == 'Completed'}"
+                     style="background:#e6f7ee; border-color:#5cb85c;">
+                    ✅ Job marked as completed.
                 </div>
             </article>
         </div>
